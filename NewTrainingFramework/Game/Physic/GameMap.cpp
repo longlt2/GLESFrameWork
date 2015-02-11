@@ -62,7 +62,7 @@ void GameMap::Init(char *vs, char *fs)
 
 
     // VAO
-    glGenBuffers(1, &mVao);
+    glGenVertexArray(1, &mVao);
     glBindVertexArray(mVao);
 
     glEnableVertexAttribArray(posLoc);
@@ -125,7 +125,7 @@ void GameMap::Draw(int _x, int _y, int width, int height)
     glBindTexture(GL_TEXTURE_2D, mTexture);
 
     glBindVertexArray(mVao);
-    glDrawElements( GL_TRIANGLES, 6, GL_FLOAT, 0 );
+    glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0 );
 
     glBindVertexArray(0);
 }
