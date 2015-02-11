@@ -89,7 +89,7 @@ int Init ( ESContext *esContext )
 
     // InitFrameBuffer();
 
-    gmap.Init("../Resources/Shaders/GameMap.vs", "../Resources/Shaders/GameMap.fs");
+    gmap.Init("../Resources/Shaders/TriangleShaderVS.vs", "../Resources/Shaders/TriangleShaderFS.fs");
 
     return 0;
 }
@@ -136,13 +136,13 @@ void draw(ESContext *esContext)
 //     // video->DrawCustom( ( int )( 0 ), ( int )( 0 ), SCREEN_W , SCREEN_H, gFboTexture[i] );
 // }
 
-    gmap.Bind(true);
-    g_sceneManager->Render(video, prediction * 0.01f);
-    gmap.Bind(false);
+    // gmap.Bind(true);
+    // g_sceneManager->Render(video, prediction * 0.01f);
+    // gmap.Bind(false);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    g_sceneManager->Render(video, prediction * 0.01f);
+    // g_sceneManager->Render(video, prediction * 0.01f);
 
     gmap.Draw(0, 0, SCREEN_W/2, SCREEN_H/2);
 

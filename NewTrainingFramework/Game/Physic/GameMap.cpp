@@ -19,10 +19,19 @@ void GameMap::Init(char *vs, char *fs)
     GLint posLoc = glGetAttribLocation(mShader.program, "a_posL");
     GLint texLoc = glGetAttribLocation(mShader.program, "a_texCoord");
     GLint uSampl = glGetUniformLocation(mShader.program, "uSampler");
+    GLint uColor = glGetUniformLocation(mShader.program, "unifColor");
 
     glUseProgram(mShader.program);
     // We assume, that the parent program created the texture!
-    glUniform1i(uSampl, 0);
+    if(uSampl != -1)
+    {
+        glUniform1i(uSampl, 0);
+    }
+
+    if(uColor != -1)
+    {
+        glUniform4fv(uColor, 1, glm::value_ptr(glm::vec4(1)));
+    }
 
     mTexCoord[0].x = 0;
     mTexCoord[0].y = 1;
@@ -45,34 +54,53 @@ void GameMap::Init(char *vs, char *fs)
     mIndices[4] = 4;
     mIndices[5] = 5;
 
+    mVertices[0].x = X2GAME(11, SCREEN_W);
+    mVertices[0].y = Y2GAME(12, SCREEN_H);
+    mVertices[1].x = X2GAME(11, SCREEN_W);
+    mVertices[1].y = Y2GAME(12 + 152, SCREEN_H);
+    mVertices[2].x = X2GAME(11 + 151, SCREEN_W);
+    mVertices[2].y = Y2GAME(12 + 152, SCREEN_H);
+
+    mVertices[3].x = X2GAME(11, SCREEN_W);
+    mVertices[3].y = Y2GAME(12, SCREEN_H);
+    mVertices[4].x = X2GAME(11 + 151, SCREEN_W);
+    mVertices[4].y = Y2GAME(12 + 152, SCREEN_H);
+    mVertices[5].x = X2GAME(11 + 151, SCREEN_W);
+    mVertices[5].y = Y2GAME(12, SCREEN_H);
 
     // Vertex VBO
     glGenBuffers(1, &mVertexVbo);
     glBindBuffer(GL_ARRAY_BUFFER, mVertexVbo);
-    glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(glm::vec2), mVertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(glm::vec2), mVertices, GL_STATIC_DRAW);
     // Texture coordinate VBO
     glGenBuffers(1, &mTexCoordVbo);
     glBindBuffer(GL_ARRAY_BUFFER, mTexCoordVbo);
-    glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(glm::vec2), mTexCoord, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(glm::vec2), mTexCoord, GL_STATIC_DRAW);
 
     // IBO
     glGenBuffers(1, &mIbo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIbo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4 * sizeof(GLuint), (GLuint*) mIndices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(GLuint), (GLuint*) mIndices, GL_STATIC_DRAW);
 
 
     // VAO
-    glGenVertexArray(1, &mVao);
+    glGenVertexArrays(1, &mVao);
     glBindVertexArray(mVao);
 
-    glEnableVertexAttribArray(posLoc);
-    glEnableVertexAttribArray(texLoc);
+    if(posLoc != -1)
+    {
+        glEnableVertexAttribArray(posLoc);
+        glBindBuffer( GL_ARRAY_BUFFER, mVertexVbo );
+        glVertexAttribPointer( posLoc, 2, GL_FLOAT, GL_FALSE, 0, 0 );
+    }
 
-    glBindBuffer( GL_ARRAY_BUFFER, mVertexVbo );
-    glVertexAttribPointer( posLoc, 2, GL_FLOAT, GL_FALSE, 0, 0 );
+    if(texLoc != -1)
+    {
+        glEnableVertexAttribArray(texLoc);
+        glBindBuffer( GL_ARRAY_BUFFER, mTexCoordVbo );
+        glVertexAttribPointer( texLoc, 4, GL_FLOAT, GL_FALSE, 0, 0 );
+    }
 
-    glBindBuffer( GL_ARRAY_BUFFER, mTexCoordVbo );
-    glVertexAttribPointer( texLoc, 4, GL_FLOAT, GL_FALSE, 0, 0 );
 
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, mIbo );
     glBindVertexArray(0);
