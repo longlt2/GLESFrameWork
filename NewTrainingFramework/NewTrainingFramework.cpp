@@ -13,9 +13,11 @@
 #include "Circle.h"
 #include "Rectangle.h"
 #include "Plane.h"
+#include "GameMap.h"
 
 GLuint vboId;
 Shaders myShaders;
+GameObject::GameMap gmap;
 
 enum FBO_TEXTURE
 {
@@ -69,6 +71,7 @@ int Init ( ESContext *esContext )
 
     //creation of shaders and program
     myShaders.Init("../Resources/Shaders/TriangleShaderVS.vs", "../Resources/Shaders/TriangleShaderFS.fs");
+
     gWIDTH = SCREEN_W;
     gHEIGHT = SCREEN_H;
     GUtils::VideoDriver::GetInstance()->SetProgram(myShaders.program);
@@ -84,7 +87,10 @@ int Init ( ESContext *esContext )
 
     gStartTime = GetTickCount();
 
-    InitFrameBuffer();
+    // InitFrameBuffer();
+
+    gmap.Init("../Resources/Shaders/GameMap.vs", "../Resources/Shaders/GameMap.fs");
+
     return 0;
 }
 
@@ -130,7 +136,15 @@ void draw(ESContext *esContext)
 //     // video->DrawCustom( ( int )( 0 ), ( int )( 0 ), SCREEN_W , SCREEN_H, gFboTexture[i] );
 // }
 
+    gmap.Bind(true);
     g_sceneManager->Render(video, prediction * 0.01f);
+    gmap.Bind(false);
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    g_sceneManager->Render(video, prediction * 0.01f);
+
+    gmap.Draw(0, 0, SCREEN_W/2, SCREEN_H/2);
 
 }
 
@@ -207,7 +221,7 @@ int _tmain(int argc, _TCHAR* argv[])
     //identifying memory leaks
     // MemoryDump();
     printf("Press any key...\n");
-    _getch();
+    // _getch();
 
     return 0;
 }
