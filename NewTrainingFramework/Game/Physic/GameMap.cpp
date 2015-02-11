@@ -54,24 +54,10 @@ void GameMap::Init(char *vs, char *fs)
     mIndices[4] = 4;
     mIndices[5] = 5;
 
-    mVertices[0].x = X2GAME(11, SCREEN_W);
-    mVertices[0].y = Y2GAME(12, SCREEN_H);
-    mVertices[1].x = X2GAME(11, SCREEN_W);
-    mVertices[1].y = Y2GAME(12 + 152, SCREEN_H);
-    mVertices[2].x = X2GAME(11 + 151, SCREEN_W);
-    mVertices[2].y = Y2GAME(12 + 152, SCREEN_H);
-
-    mVertices[3].x = X2GAME(11, SCREEN_W);
-    mVertices[3].y = Y2GAME(12, SCREEN_H);
-    mVertices[4].x = X2GAME(11 + 151, SCREEN_W);
-    mVertices[4].y = Y2GAME(12 + 152, SCREEN_H);
-    mVertices[5].x = X2GAME(11 + 151, SCREEN_W);
-    mVertices[5].y = Y2GAME(12, SCREEN_H);
-
     // Vertex VBO
     glGenBuffers(1, &mVertexVbo);
-    glBindBuffer(GL_ARRAY_BUFFER, mVertexVbo);
-    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(glm::vec2), mVertices, GL_STATIC_DRAW);
+    // glBindBuffer(GL_ARRAY_BUFFER, mVertexVbo);
+    // glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(glm::vec2), mVertices, GL_STATIC_DRAW);
     // Texture coordinate VBO
     glGenBuffers(1, &mTexCoordVbo);
     glBindBuffer(GL_ARRAY_BUFFER, mTexCoordVbo);
@@ -148,14 +134,19 @@ void GameMap::Draw(int _x, int _y, int width, int height)
     mVertices[5].x = X2GAME(_x + width, SCREEN_W);
     mVertices[5].y = Y2GAME(_y, SCREEN_H);
 
-    glUseProgram(mShader.program);
-
-    glBindTexture(GL_TEXTURE_2D, mTexture);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glBindVertexArray(mVao);
+    glBindBuffer(GL_ARRAY_BUFFER, mVertexVbo);
+    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(glm::vec2), mVertices, GL_STATIC_DRAW);
+
+    glUseProgram(mShader.program);
+    glBindTexture(GL_TEXTURE_2D, mTexture);
     glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0 );
 
     glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void GameMap::Bind(bool isStart)
