@@ -24,8 +24,8 @@ protected:
 
 public:
 
-    glm::vec2 mVertices[6];
-    glm::vec2 mTexCoord[6];
+    glm::vec2 mVertices[4];
+    glm::vec2 mTexCoord[4];
     unsigned int mIndices[6];
 
     GLuint mVao;

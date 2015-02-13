@@ -63,7 +63,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libEGL.lib;libGLESv2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DevIL.lib;ILU.lib;ILUT.lib;libEGL.lib;libGLESv2.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
@@ -98,6 +98,7 @@
     <ClCompile Include="Game\Physic\Plane.cpp" />
     <ClCompile Include="Game\Physic\Rectangle.cpp" />
     <ClCompile Include="Game\Physic\SceneManager.cpp" />
+    <ClCompile Include="Game\Utils\TextureManager.cpp" />
     <ClCompile Include="Game\Utils\VideoDriver.cpp" />
     <ClCompile Include="NewTrainingFramework.cpp" />
     <ClCompile Include="Shaders.cpp" />
@@ -116,6 +117,7 @@
     <ClInclude Include="Game\Physic\Rectangle.h" />
     <ClInclude Include="Game\Physic\SceneManager.h" />
     <ClInclude Include="Game\Utils\Define.h" />
+    <ClInclude Include="Game\Utils\texturemanager.h" />
     <ClInclude Include="Game\Utils\VideoDriver.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Shaders.h" />

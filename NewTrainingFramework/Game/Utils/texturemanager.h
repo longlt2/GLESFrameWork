@@ -35,7 +35,7 @@ class TextureManager
     protected:
         TextureManager();
         ~TextureManager();
-
+	public:
         GLuint powerOfTwo( GLuint num );
         void initVBO();
         void freeVBO();

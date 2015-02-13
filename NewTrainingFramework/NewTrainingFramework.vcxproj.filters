@@ -66,6 +66,9 @@
     <ClCompile Include="Game\Physic\GameMap.cpp">
       <Filter>Source Files\Game\Physic</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Utils\TextureManager.cpp">
+      <Filter>Source Files\Game\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Globals.h">
@@ -112,6 +115,9 @@
     </ClInclude>
     <ClInclude Include="Game\Physic\GameMap.h">
       <Filter>Source Files\Game\Physic</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Utils\texturemanager.h">
+      <Filter>Source Files\Game\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

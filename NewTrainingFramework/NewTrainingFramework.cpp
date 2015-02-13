@@ -32,39 +32,6 @@ GLuint gFbo = 0;
 GLuint gFboTexture[FBO_TEXTURE_MAX];
 GLuint gFboDepth = 0;
 
-void InitFrameBuffer( void )
-{
-    // // depth buffer
-    // glGenRenderbuffers(1, &gFboDepth);
-    // glBindRenderbuffer(GL_RENDERBUFFER, gFboDepth);
-    // glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, SCREEN_W, SCREEN_H);
-    // glBindRenderbuffer(GL_RENDERBUFFER, 0);
-
-    // frame buffer object
-    glGenFramebuffers(1, &gFbo);
-    glBindFramebuffer(GL_FRAMEBUFFER, gFbo);
-
-    // // texture buffer
-    for (int i = 0; i < FBO_TEXTURE_MAX; ++i)
-    {
-        glGenTextures(1, &gFboTexture[i]);
-        glBindTexture(GL_TEXTURE_2D, gFboTexture[i]);
-        glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, SCREEN_W, SCREEN_H, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL );
-        glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-        glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-        glBindTexture( GL_TEXTURE_2D, NULL );
-
-
-        // // bind depth & texture
-        // glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, gFboDepth);
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0+i, GL_TEXTURE_2D, gFboTexture[i], 0);
-    }
-    // g_sceneManager->Render(video);
-    glBindFramebuffer( GL_FRAMEBUFFER, 0 ); // Unbind our frame buffer
-}
-
 int Init ( ESContext *esContext )
 {
     glClearColor ( 0.0f, 0.0f, 0.0f, 0.0f );
@@ -87,8 +54,6 @@ int Init ( ESContext *esContext )
 
     gStartTime = GetTickCount();
 
-    // InitFrameBuffer();
-
     gmap.Init("../Resources/Shaders/GameMap.vs", "../Resources/Shaders/GameMap.fs");
 
     return 0;
@@ -106,37 +71,8 @@ void draw(ESContext *esContext)
 
     float prediction = float( GetTickCount() + FRAME_TIME - gStartTime ) / float( FRAME_TIME );
 
-    //-------------------------------------------------------------------------
-
-// for (int i = 0; i < FBO_TEXTURE_MAX; ++i)
-// {
-//     // bind a framebuffer object
-//     glBindFramebuffer(GL_FRAMEBUFFER, gFbo);
-//     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0+i, GL_TEXTURE_2D, gFboTexture[i], 0);
-
-//     //Clear framebuffer
-//     video->CleanScreen();
-// if(i==1)
-// {
-//     g_sceneManager->Render(video, prediction * 0.025f);
-// }
-// else
-// {
-//     video->DrawFillRect(( int )( 0 ), ( int )( 0 ), SCREEN_W , SCREEN_H);
-// }
-//     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-// }
-//     //-------------------------------------------------------------------------
-
-// for (int i = 0; i < FBO_TEXTURE_MAX; ++i)
-// {
-//     //draw fbo texture
-//     // video->DrawCustom( ( int )( SCREEN_W - SCREEN_W/4 ), ( int )( 0 ), SCREEN_W/4 , SCREEN_H/4, gFboTexture[i] );
-//     // video->DrawCustom( ( int )( 0 ), ( int )( 0 ), SCREEN_W , SCREEN_H, gFboTexture[i] );
-// }
-
     gmap.Bind(true);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     g_sceneManager->Render(video, prediction * 0.01f);
     gmap.Bind(false);
 
