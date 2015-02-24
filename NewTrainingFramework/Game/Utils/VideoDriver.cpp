@@ -2,12 +2,53 @@
 // #include "stdafx.h"
 #include "VideoDriver.h"
 #include "glm/gtc/type_ptr.hpp"
+// glm::translate, glm::rotate, glm::scale
+#include <glm/gtc/matrix_transform.hpp>
+// glm::value_ptr
+#include <glm/gtc/type_ptr.hpp>
+
 #include "Define.h"
 #include <cmath>
 #include "Physic.h"
 
 namespace GUtils
 {
+
+static float sScale = 0;
+
+void mvp(GLuint program)
+{
+    sScale += 0.0001f;
+    GLint locs = glGetUniformLocation(program, "uModel");
+    if (locs != -1)
+    {
+        glm::mat4 matrix(1);
+
+        // matrix = glm::translate(matrix, glm::vec3(sinf(sScale), 0, 1.0f));
+        matrix = glm::translate(matrix, glm::vec3(-0.5f, 0.5f, 1.0f));
+
+        glUniformMatrix4fv(locs, 1, GL_FALSE, glm::value_ptr(matrix));
+    }
+
+    locs = glGetUniformLocation(program, "uView");
+    if (locs != -1)
+    {
+        glm::mat4 matrix(1);
+
+        glUniformMatrix4fv(locs, 1, GL_FALSE, glm::value_ptr(matrix));
+    }
+
+    locs = glGetUniformLocation(program, "uProj");
+    if (locs != -1)
+    {
+        glm::mat4 matrix(1);
+
+        matrix = glm::ortho(-2.0f, 2.0f, -2.0f, 2.0f, -1.0f, 1.0f);
+
+        glUniformMatrix4fv(locs, 1, GL_FALSE, glm::value_ptr(matrix));
+    }
+}
+
 
 VideoDriver* VideoDriver::msInstance = 0;
 
@@ -78,6 +119,8 @@ eGameReturn_t VideoDriver::Draw(float x, float y, float width, float height, GLu
             glUniform4fv(locs, 1, glm::value_ptr(f));
         }
 
+        mvp(mProgram);
+
         glDrawArrays(GL_TRIANGLES, 0, 6);
     }
     else
@@ -110,6 +153,8 @@ eGameReturn_t VideoDriver::DrawVertices(float const *vertices, unsigned int numV
     {
         glUniform4fv(locs, 1, glm::value_ptr(f));
     }
+
+    mvp(mProgram);
 
     glDrawArrays(mode, 0, numVertices);
 

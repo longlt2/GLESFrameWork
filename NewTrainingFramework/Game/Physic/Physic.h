@@ -74,19 +74,19 @@ enum OBJECT_TYPE
 
 #define PLANE_TOP_POSITION              glm::vec2(0, 0)
 #define PLANE_TOP_NORMAL                glm::vec2(0, 1)
-#define PLANE_TOP_VELOCITY              glm::vec2(SCREEN_W, 0)
+#define PLANE_TOP_VELOCITY              glm::vec2(SCREEN_W, 1)
 
 #define PLANE_BOTTOM_POSITION           glm::vec2(0, SCREEN_H)
 #define PLANE_BOTTOM_NORMAL             glm::vec2(0, -1)
-#define PLANE_BOTTOM_VELOCITY           glm::vec2(SCREEN_W, SCREEN_H)
+#define PLANE_BOTTOM_VELOCITY           glm::vec2(SCREEN_W, SCREEN_H - 1)
 
 #define PLANE_LEFT_POSITION             glm::vec2(0, 0)
 #define PLANE_LEFT_NORMAL               glm::vec2(1, 0)
-#define PLANE_LEFT_VELOCITY             glm::vec2(0, SCREEN_H)
+#define PLANE_LEFT_VELOCITY             glm::vec2(1, SCREEN_H)
 
 #define PLANE_RIGHT_POSITION            glm::vec2(SCREEN_W, 0)
 #define PLANE_RIGHT_NORMAL              glm::vec2(-1, 0)
-#define PLANE_RIGHT_VELOCITY            glm::vec2(SCREEN_W, SCREEN_H)
+#define PLANE_RIGHT_VELOCITY            glm::vec2(SCREEN_W, SCREEN_H - 1)
 
 #define PLANE_TYPE_TOP           (1 >> 0)
 #define PLANE_TYPE_BOTTOM        (PLANE_TYPE_TOP >> 1)

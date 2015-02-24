@@ -1,6 +1,11 @@
 #include "GameMap.h"
-#include <glm/gtc/type_ptr.hpp>
 #include "TextureManager.h"
+// glm::translate, glm::rotate, glm::scale
+#include <glm/gtc/matrix_transform.hpp>
+// glm::value_ptr
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/string_cast.hpp>
+#include <iostream>
 
 using namespace GameObject;
 
@@ -13,6 +18,13 @@ GameMap::~GameMap()
 {
 
 }
+
+static float sScale = 0;
+GLint posLoc;
+GLint texLoc;
+GLint uSampl;
+GLint uColor;
+GLint world;
 
 void GameMap::Init(char *vs, char *fs)
 {
@@ -29,10 +41,12 @@ void GameMap::Init(char *vs, char *fs)
 
     glUseProgram(mShader.program);
 
-    GLint posLoc = glGetAttribLocation(mShader.program, "a_posL");
-    GLint texLoc = glGetAttribLocation(mShader.program, "a_texCoord");
-    GLint uSampl = glGetUniformLocation(mShader.program, "uSampler");
-    GLint uColor = glGetUniformLocation(mShader.program, "unifColor");
+    posLoc = glGetAttribLocation(mShader.program, "a_posL");
+    texLoc = glGetAttribLocation(mShader.program, "a_texCoord");
+    uSampl = glGetUniformLocation(mShader.program, "uSampler");
+    uColor = glGetUniformLocation(mShader.program, "unifColor");
+    world = glGetUniformLocation(mShader.program, "uniWorld");
+
     // We assume, that the parent program created the texture!
     if(uSampl != -1)
     {
@@ -42,6 +56,18 @@ void GameMap::Init(char *vs, char *fs)
     if(uColor != -1)
     {
         glUniform4fv(uColor, 1, glm::value_ptr(glm::vec4(1)));
+    }
+
+    if(world != -1)
+    {
+        glm::mat4 m4Model(1), m4View(1), m4Projection(1);
+
+		// m4Projection = glm::ortho(-4.0f / 3.0f, 4.0f / 3.0f, -1.0f, 1.0f, -1.0f, 1.0f);
+        m4Model = glm::translate(m4Model, glm::vec3(0.0f, sScale, 1.0f));
+        // m4Model = glm::rotate(m4Model, 45.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+
+        glm::mat4 MVP = m4Model * m4View * m4Projection;
+        glUniformMatrix4fv(world, 1, GL_FALSE, glm::value_ptr(MVP));
     }
 
     mTexCoord[0] = glm::vec2(0, 1);
@@ -114,6 +140,24 @@ void GameMap::Init(char *vs, char *fs)
 
 void GameMap::Draw(int _x, int _y, int width, int height)
 {
+    if(world != -1)
+    {
+        sScale += 0.001f;
+        glm::mat4 m4Model(1), m4View(1), m4Projection(1);
+
+        // m4Projection = glm::ortho(-4.0f / 3.0f, 4.0f / 3.0f, -1.0f, 1.0f, -1.0f, 1.0f);
+        // m4Model = glm::translate(m4Model, glm::vec3(0.0f, sinf(sScale), 2.0f));
+        // m4Model = glm::rotate(m4Model, 45.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+
+        m4Model = glm::translate(m4Model, glm::vec3(2.0f, 3.0f, 0.0f));
+
+        glm::mat4 MVP = m4Model * m4View * m4Projection;
+
+        glm::vec4 temp = MVP * glm::vec4(0,0,1,1);
+        std::cout<<glm::to_string(m4Model[0])<<std::endl;
+
+        glUniformMatrix4fv(world, 1, GL_FALSE, glm::value_ptr(MVP));
+    }
 
     mVertices[0] = glm::vec2(X2GAME(_x, SCREEN_W), Y2GAME(_y, SCREEN_H));
     mVertices[1] = glm::vec2(X2GAME(_x + width, SCREEN_W), Y2GAME(_y, SCREEN_H));
@@ -134,6 +178,7 @@ void GameMap::Draw(int _x, int _y, int width, int height)
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+    glUseProgram(0);
 }
 
 void GameMap::Bind(bool isStart)

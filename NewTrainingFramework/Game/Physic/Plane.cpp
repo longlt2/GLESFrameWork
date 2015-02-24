@@ -30,6 +30,7 @@ Plane::Plane( Plane const &p )
 void Plane::Render( GUtils::VideoDriver *video, float prediction ) const
 {
     // video->DrawLine( m_position, m_velocity );
+    video->DrawFillRect(m_position.x - 1, m_position.y - 1, m_velocity.x + 2, m_velocity.y + 2);
     // video->DrawRect(m_position.x, m_position.y, m_velocity.x, m_velocity.y,2);
     // TRACE_FUNCL("%f-%f",m_position.x, m_position.y);
 }

@@ -15,6 +15,8 @@
 #include "Plane.h"
 #include "GameMap.h"
 
+#include <iostream>
+
 GLuint vboId;
 Shaders myShaders;
 GameObject::GameMap gmap;
@@ -74,12 +76,18 @@ void draw(ESContext *esContext)
     gmap.Bind(true);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     g_sceneManager->Render(video, prediction * 0.01f);
+
+    // video->DrawLine( glm::vec2(0, 0), glm::vec2(SCREEN_W, 0) );
+    // video->DrawLine( glm::vec2(SCREEN_W, 0), glm::vec2(SCREEN_W, SCREEN_H) );
+    // video->DrawLine( glm::vec2(SCREEN_W, SCREEN_H), glm::vec2(0, SCREEN_H) );
+    // video->DrawLine( glm::vec2(0, SCREEN_H), glm::vec2(0, 0) );
+
     gmap.Bind(false);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    gmap.Draw(0, 0, SCREEN_W/2, SCREEN_H/2);
-    // g_sceneManager->Render(video, prediction * 0.01f);
+    // gmap.Draw(0, 0, SCREEN_W, SCREEN_H);
+    g_sceneManager->Render(video, prediction * 0.01f);
 
 
 }
@@ -145,7 +153,7 @@ int _tmain(int argc, _TCHAR* argv[])
     esRegisterKeyFunc ( &esContext, Key);
 
     esRegisterMouseLeftFunc(&esContext, MouseLeft);
-	esRegisterMouseRightFunc(&esContext, MouseRight);
+    esRegisterMouseRightFunc(&esContext, MouseRight);
     esRegisterMouseMoveFunc(&esContext, MouseMove);
 
 
