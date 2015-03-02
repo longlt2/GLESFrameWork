@@ -14,12 +14,13 @@
 #include "Rectangle.h"
 #include "Plane.h"
 #include "GameMap.h"
-
+#include "Cube.h"
 #include <iostream>
 
 GLuint vboId;
 Shaders myShaders;
 GameObject::GameMap gmap;
+Cube cube;
 
 enum FBO_TEXTURE
 {
@@ -57,7 +58,7 @@ int Init ( ESContext *esContext )
     gStartTime = GetTickCount();
 
     gmap.Init("../Resources/Shaders/GameMap.vs", "../Resources/Shaders/GameMap.fs");
-
+    cube.Init("../Resources/Shaders/Cube.vs", "../Resources/Shaders/Cube.fs");
     return 0;
 }
 
@@ -94,14 +95,17 @@ void draw(ESContext *esContext)
 
 void Draw ( ESContext *esContext )
 {
-    video->CleanScreen();
+    // video->CleanScreen();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // video->DrawFillRect(glm::vec2(0,0), 100, 100);
     // video->DrawRect(100, 100, 100, 100);
     // video->DrawLine(100, 100, 500, 500);
     // video->DrawCircle(200, 400, 100);
 
-    draw(esContext);
+    // draw(esContext);
+    cube.Draw();
+
     eglSwapBuffers ( esContext->eglDisplay, esContext->eglSurface );
 }
 

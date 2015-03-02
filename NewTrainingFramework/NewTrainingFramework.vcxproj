@@ -98,6 +98,7 @@
     <ClCompile Include="Game\Physic\Plane.cpp" />
     <ClCompile Include="Game\Physic\Rectangle.cpp" />
     <ClCompile Include="Game\Physic\SceneManager.cpp" />
+    <ClCompile Include="Game\Utils\Cube.cpp" />
     <ClCompile Include="Game\Utils\TextureManager.cpp" />
     <ClCompile Include="Game\Utils\VideoDriver.cpp" />
     <ClCompile Include="NewTrainingFramework.cpp" />
@@ -116,6 +117,7 @@
     <ClInclude Include="Game\Physic\Plane.h" />
     <ClInclude Include="Game\Physic\Rectangle.h" />
     <ClInclude Include="Game\Physic\SceneManager.h" />
+    <ClInclude Include="Game\Utils\Cube.h" />
     <ClInclude Include="Game\Utils\Define.h" />
     <ClInclude Include="Game\Utils\texturemanager.h" />
     <ClInclude Include="Game\Utils\VideoDriver.h" />

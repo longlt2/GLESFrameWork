@@ -140,6 +140,7 @@ void GameMap::Init(char *vs, char *fs)
 
 void GameMap::Draw(int _x, int _y, int width, int height)
 {
+    glUseProgram(mShader.program);
     if(world != -1)
     {
         sScale += 0.001f;
@@ -164,7 +165,6 @@ void GameMap::Draw(int _x, int _y, int width, int height)
     mVertices[2] = glm::vec2(X2GAME(_x + width, SCREEN_W), Y2GAME(_y + height, SCREEN_H));
     mVertices[3] = glm::vec2(X2GAME(_x, SCREEN_W), Y2GAME(_y + height, SCREEN_H));
 
-    glUseProgram(mShader.program);
 
     glBindVertexArray(mVao);
     glBindBuffer(GL_ARRAY_BUFFER, mVertexVbo);
