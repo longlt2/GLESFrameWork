@@ -97,7 +97,7 @@ void Draw ( ESContext *esContext )
 {
     // video->CleanScreen();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+    glEnable(GL_DEPTH_TEST);
     // video->DrawFillRect(glm::vec2(0,0), 100, 100);
     // video->DrawRect(100, 100, 100, 100);
     // video->DrawLine(100, 100, 500, 500);

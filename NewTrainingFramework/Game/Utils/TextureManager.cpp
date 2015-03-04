@@ -49,8 +49,11 @@ bool TextureManager::loadTextureFromFile32( std::string path )
             GLuint imgHeight = (GLuint)ilGetInteger( IL_IMAGE_HEIGHT );
 
             //Calculate required texture dimensions
-            GLuint texWidth = powerOfTwo( imgWidth );
-            GLuint texHeight = powerOfTwo( imgHeight );
+            // GLuint texWidth = powerOfTwo( imgWidth );
+            // GLuint texHeight = powerOfTwo( imgHeight );
+
+            GLuint texWidth = ( imgWidth );
+            GLuint texHeight = ( imgHeight );
 
             //Texture is the wrong size
             if( imgWidth != texWidth || imgHeight != texHeight )

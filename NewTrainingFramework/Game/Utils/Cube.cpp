@@ -4,13 +4,16 @@
 // glm::value_ptr
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/string_cast.hpp>
+#include <glm/gtc/constants.hpp>
+
 #include "TextureManager.h"
 #include <iostream>
-
+#include "Define.h"
+#include "Physic.h"
 using namespace std;
 
-float sScale = 0;
-
+static float sScale = 0;
+static float sRotate = 0;
 
 Cube::Cube()
 {
@@ -29,7 +32,7 @@ void Cube::Init(char *vs, char *fs)
     // Initialize DevIL
     ilInit();
     ilClearColour( 255, 255, 255, 000 );
-    if( !TextureManager::GetInstance()->loadTextureFromFile32( "../Resources/Textures/test.png" ) )
+    if( !TextureManager::GetInstance()->loadTextureFromFile32( "../Resources/Textures/opengl.png" ) )
     {
         // printf( "Unable to load file texture!\n" );
         cout<<"Unable to load file texture!\n";
@@ -50,27 +53,27 @@ void Cube::Init(char *vs, char *fs)
         glUniform1i(uilSampl, 0);
     }
 
-	if (uv4lColor != -1)
+    if (uv4lColor != -1)
     {
-		glUniform4fv(uv4lColor, 1, glm::value_ptr(glm::vec4(1)));
+        glUniform4fv(uv4lColor, 1, glm::value_ptr(glm::vec4(1)));
     }
 
     int i=0;
-    mVertices[i++] = glm::vec3(-1.0f,  1.0f,  0.0f);
-    mVertices[i++] = glm::vec3( 1.0f,  1.0f,  0.0f);
-    mVertices[i++] = glm::vec3(-1.0f, -1.0f,  0.0f);
-    mVertices[i++] = glm::vec3( 1.0f, -1.0f,  0.0f);
+    mVertices[i++] = glm::vec3(-1.0f,  1.0f,  -1.f);
+    mVertices[i++] = glm::vec3( 1.0f,  1.0f,  -1.f);
+    mVertices[i++] = glm::vec3(-1.0f, -1.0f,  -1.f);
+    mVertices[i++] = glm::vec3( 1.0f, -1.0f,  -1.f);
 
-    mVertices[i++] = glm::vec3(-1.0f,  1.0f,  1.0f);
-    mVertices[i++] = glm::vec3( 1.0f,  1.0f,  1.0f);
-    mVertices[i++] = glm::vec3(-1.0f, -1.0f,  1.0f);
-    mVertices[i++] = glm::vec3( 1.0f, -1.0f,  1.0f);
+    mVertices[i++] = glm::vec3(-1.0f,  1.0f,  1.f);
+    mVertices[i++] = glm::vec3( 1.0f,  1.0f,  1.f);
+    mVertices[i++] = glm::vec3(-1.0f, -1.0f,  1.f);
+    mVertices[i++] = glm::vec3( 1.0f, -1.0f,  1.f);
 
     i=0;
     mTexCoord[i++] = glm::vec2(0, 1);
-    mTexCoord[i++] = glm::vec2(1, 0);
     mTexCoord[i++] = glm::vec2(1, 1);
     mTexCoord[i++] = glm::vec2(0, 0);
+    mTexCoord[i++] = glm::vec2(1, 0);
 
     // mTexCoord[i++] = glm::vec2(0, 1);
     // mTexCoord[i++] = glm::vec2(1, 0);
@@ -185,23 +188,44 @@ void Cube::Init(char *vs, char *fs)
 
 void Cube::Draw(void) const
 {
+    // glFrontFace(GL_CCW);
     glUseProgram(mShader.program);
     if(um4lWorld != -1)
     {
-        sScale += 0.001f;
-        glm::mat4 m4Model(1), m4View(1), m4Proj(1);
+        static float tmp = .05f;
+        sRotate += 0.04f;
+        if(sScale > 10)
+        {
+            tmp = -.05f;
+        }
 
+        if(sScale < 0)
+        {
+            tmp = .05f;
+        }
+
+        sScale += tmp;
+        // if(sScale > 90.f) sScale = 0.f;
+        // TRACEFLT(sScale);
+        glm::mat4 m4Model(1), m4View(1), m4Proj(1);
+		float pi = glm::pi<float>();
         // m4Proj = glm::ortho(-4.0f / 3.0f, 4.0f / 3.0f, -1.0f, 1.0f, -1.0f, 1.0f);
         // m4Model = glm::translate(m4Model, glm::vec3(0.0f, sinf(sScale), 2.0f));
-        // m4Model = glm::rotate(m4Model, 45.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+        // m4Model = glm::rotate(m4Model, sinf(sScale), glm::vec3(0.0f, 0.0f, 1.0f));
 
-        m4Model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 1.f));
-        m4Model = glm::rotate(m4Model, 15.f, glm::vec3(1.0f, 1.f, 1.f));
-        m4Model = glm::scale(m4Model, glm::vec3(0.2));
+        m4Model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.f));
+		// m4Model = glm::rotate(m4Model, sRotate, glm::vec3(-1.f));
+        m4Model = glm::scale(m4Model, glm::vec3(1.5f));
 
-        // m4Proj = glm::perspective(45.0f, 4.0f / 3.0f, 0.0f, 100.f);
+        m4Proj = glm::perspective(45.f, 1.f * SCREEN_W / SCREEN_H, 0.1f, 100.f);
 
-        glm::mat4 MVP = m4Model * m4View * m4Proj;
+        glm::vec3 Pos(3.f, -4.f, -3.f);
+        glm::vec3 Target(0.0f, .0f, 0.f);
+        glm::vec3 Up(0.0, -1.0f, 0.0f);
+
+        m4View = glm::lookAt( Pos, Target, Up );
+
+        glm::mat4 MVP = m4Proj * m4View * m4Model;
 
         // glm::vec4 temp = MVP * glm::vec4(0,0,1,1);
         // std::cout<<glm::to_string(m4Model[0])<<std::endl;
@@ -213,7 +237,7 @@ void Cube::Draw(void) const
     glBindTexture(GL_TEXTURE_2D, TextureManager::GetInstance()->TextureID());
 // glBindTexture( GL_TEXTURE_2D, NULL );
 
-    glDrawElements( GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0 );
+    glDrawElements( GL_TRIANGLES, 18, GL_UNSIGNED_INT, 0 );
 
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindVertexArray(0);
