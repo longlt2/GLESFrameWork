@@ -10,7 +10,7 @@
 #include "jni_base.h"
 #include "config_Android.h"
 #undef SCREEN_W
-#define SCREEN_W                        1280
+#define SCREEN_W                        1024.f
 
 #else
 #define LOGI(...)
@@ -18,8 +18,10 @@
 #endif
 
 #ifndef SCREEN_H
-#define SCREEN_H                        720
+#define SCREEN_H                        768.f
 #endif
+
+#define SCREEN_AR                       (SCREEN_W /SCREEN_H)
 
 #if (defined LIMIT_FPS)
 #undef LIMIT_FPS
@@ -94,6 +96,8 @@ enum OBJECT_TYPE
 #define PLANE_TYPE_RIGHT         (PLANE_TYPE_TOP >> 3)
 #define PLANE_TYPE_COUNT         4
 
+#define MOVE                        1
+
 extern SceneManager *g_sceneManager;
 extern CollisionManager *g_collisionManager;
 extern glm::vec2 g_touchPoint;
@@ -110,7 +114,9 @@ extern float volatile g_gravityAcc;
 extern double volatile gStartTime;
 extern double volatile gEndTime;
 extern float volatile gAccumulator;
-
+extern float volatile gCamX;
+extern float volatile gCamY;
+extern float volatile gCamZ;
 // extern Plane const g_planes[];
 
 #endif

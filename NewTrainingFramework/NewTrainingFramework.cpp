@@ -15,8 +15,10 @@
 #include "Plane.h"
 #include "GameMap.h"
 #include "Cube.h"
+#include "GCamera.h"
 #include <iostream>
-
+#include <GLFW/glfw3.h>
+GCamera gcam;
 GLuint vboId;
 Shaders myShaders;
 GameObject::GameMap gmap;
@@ -102,7 +104,8 @@ void Draw ( ESContext *esContext )
     // video->DrawRect(100, 100, 100, 100);
     // video->DrawLine(100, 100, 500, 500);
     // video->DrawCircle(200, 400, 100);
-
+gcam.UpdateMatrix(FRAME_TIME);
+cube.SetMVP(gcam.GetProjection() * gcam.GetView());
     // draw(esContext);
     cube.Draw();
 
@@ -116,7 +119,63 @@ void Update ( ESContext *esContext, float deltaTime )
 
 void Key ( ESContext *esContext, unsigned char key, bool bIsPressed)
 {
+    // if(!bIsPressed)
+    {
+        switch (key)
+        {
+            case 'w':
+            case 'W':
+            {
+                bIsPressed ? gcam.KeyPressed(eCameraKeyUp) : gcam.KeyReleased(eCameraKeyUp);
+                TRACEINT(key);
+            }
+            break;
 
+            case 'a':
+            case 'A':
+            {
+                bIsPressed ? gcam.KeyPressed(eCameraKeyLeft) : gcam.KeyReleased(eCameraKeyLeft);
+                TRACEINT(key);
+            }
+            break;
+
+            case 's':
+            case 'S':
+            {
+                bIsPressed ? gcam.KeyPressed(eCameraKeyDown) : gcam.KeyReleased(eCameraKeyDown);
+                TRACEINT(key);
+            }
+            break;
+
+            case 'd':
+            case 'D':
+            {
+                bIsPressed ? gcam.KeyPressed(eCameraKeyRight) : gcam.KeyReleased(eCameraKeyRight);
+                TRACEINT(key);
+            }
+            break;
+
+            case 'q':
+            case 'Q':
+            {
+                TRACEINT(key);
+            }
+            break;
+
+            case 'e':
+            case 'E':
+            {
+                TRACEINT(key);
+            }
+            break;
+
+            default:
+            {
+                TRACEINT(key);
+            }
+            break;
+        }
+    }
 }
 
 void MouseLeft(ESContext *esContext,int x, int y, bool isPressed)
@@ -134,6 +193,9 @@ void MouseRight(ESContext *esContext,int x, int y, bool isPressed)
 void MouseMove(ESContext *esContext,int x, int y)
 {
     g_sceneManager->touchActionMove((float)x, (float)y);
+    gcam.SetDirection(glm::vec2(SCREEN_CENTER_W - x, SCREEN_CENTER_H - y));
+    // SetCursorPos(SCREEN_CENTER_W, SCREEN_CENTER_H);
+    TRACE();
 }
 
 void CleanUp()
@@ -147,7 +209,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
     esInitContext ( &esContext );
 
-    esCreateWindow ( &esContext, "Hello Triangle", Globals::screenWidth, Globals::screenHeight, ES_WINDOW_RGB | ES_WINDOW_DEPTH);
+    esCreateWindow ( &esContext, "Hello Triangle", 1024, 768, ES_WINDOW_RGB | ES_WINDOW_DEPTH);
 
     if ( Init ( &esContext ) != 0 )
         return 0;
@@ -161,6 +223,7 @@ int _tmain(int argc, _TCHAR* argv[])
     esRegisterMouseMoveFunc(&esContext, MouseMove);
 
 
+	SetCursorPos(SCREEN_CENTER_W, SCREEN_CENTER_H);
     esMainLoop ( &esContext );
 
     //releasing OpenGL resources

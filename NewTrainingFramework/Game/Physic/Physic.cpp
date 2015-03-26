@@ -22,3 +22,6 @@ float volatile g_gravityAcc = GRAVITY_ACC;
 double volatile gStartTime;
 double volatile gEndTime;
 float volatile gAccumulator = 0;
+float volatile gCamX = 0;
+float volatile gCamY = 0;
+float volatile gCamZ = 5;

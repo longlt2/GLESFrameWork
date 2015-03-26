@@ -72,6 +72,9 @@
     <ClCompile Include="Game\Utils\Cube.cpp">
       <Filter>Source Files\Game\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Utils\GCamera.cpp">
+      <Filter>Source Files\Game\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Globals.h">
@@ -123,6 +126,9 @@
       <Filter>Source Files\Game\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Game\Utils\Cube.h">
+      <Filter>Source Files\Game\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Utils\GCamera.h">
       <Filter>Source Files\Game\Utils</Filter>
     </ClInclude>
   </ItemGroup>

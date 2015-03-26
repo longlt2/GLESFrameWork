@@ -2,12 +2,12 @@
 #define __DEFINE_H__
 
 #if (defined __ANDROID__)
-#define SCREEN_W            1280
+#define SCREEN_W            1024.f
 #else
-#define SCREEN_W            960
+#define SCREEN_W            768.f
 #endif
 
-#define SCREEN_H            720
+#define SCREEN_H            768.f
 #define SCREEN_CENTER_W     (SCREEN_W/2)
 #define SCREEN_CENTER_H     (SCREEN_H/2)
 #define LIMIT_FPS           30

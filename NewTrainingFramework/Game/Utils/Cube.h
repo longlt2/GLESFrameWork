@@ -25,8 +25,8 @@ public:
     void Draw(void) const;
 
 
-    glm::vec3 mVertices[8];
-    glm::vec2 mTexCoord[4];
+    glm::vec3 mVertices[24];
+    glm::vec2 mTexCoord[24];
     GLuint mIndices[36];
 
     GLuint mVao;
@@ -43,6 +43,10 @@ public:
     GLuint um4lWorld;
 
     Shaders mShader;
+
+    glm::mat4 mMVP;
+
+    void SetMVP(glm::mat4 const &mvp);
 };
 
 #endif
