@@ -37,6 +37,10 @@ GLuint gFbo = 0;
 GLuint gFboTexture[FBO_TEXTURE_MAX];
 GLuint gFboDepth = 0;
 
+bool gIsPressed = false;
+glm::vec2 gPrevPos(0);
+glm::vec2 gCrrPos(0);
+
 int Init ( ESContext *esContext )
 {
     glClearColor ( 0.0f, 0.0f, 0.0f, 0.0f );
@@ -104,9 +108,13 @@ void Draw ( ESContext *esContext )
     // video->DrawRect(100, 100, 100, 100);
     // video->DrawLine(100, 100, 500, 500);
     // video->DrawCircle(200, 400, 100);
-gcam.UpdateMatrix(FRAME_TIME);
-cube.SetMVP(gcam.GetProjection() * gcam.GetView());
+    gcam.UpdateMatrix(FRAME_TIME);
+    cube.SetMVP(gcam.GetProjection() * gcam.GetView());
     // draw(esContext);
+    if(gIsPressed)
+    {
+        gcam.SetDirection(gCrrPos - gPrevPos);
+    }
     cube.Draw();
 
     eglSwapBuffers ( esContext->eglDisplay, esContext->eglSurface );
@@ -182,6 +190,8 @@ void MouseLeft(ESContext *esContext,int x, int y, bool isPressed)
 {
     if(isPressed) g_sceneManager->touchActionDown((float)x, (float)y);
     else g_sceneManager->touchActionUp((float)x, (float)y);
+    gIsPressed = isPressed;
+    gPrevPos = glm::vec2(x,y);
 }
 
 void MouseRight(ESContext *esContext,int x, int y, bool isPressed)
@@ -193,9 +203,13 @@ void MouseRight(ESContext *esContext,int x, int y, bool isPressed)
 void MouseMove(ESContext *esContext,int x, int y)
 {
     g_sceneManager->touchActionMove((float)x, (float)y);
-    gcam.SetDirection(glm::vec2(SCREEN_CENTER_W - x, SCREEN_CENTER_H - y));
+    // if(gIsPressed)
+    // {
+    //     gcam.SetDirection(glm::vec2(gPrevPos.x - x, gPrevPos.y - y));
+    // }
     // SetCursorPos(SCREEN_CENTER_W, SCREEN_CENTER_H);
-    TRACE();
+    // TRACE();
+    gCrrPos = glm::vec2(x, y);
 }
 
 void CleanUp()
@@ -210,7 +224,7 @@ int _tmain(int argc, _TCHAR* argv[])
     esInitContext ( &esContext );
 
     esCreateWindow ( &esContext, "Hello Triangle", 1024, 768, ES_WINDOW_RGB | ES_WINDOW_DEPTH);
-
+	
     if ( Init ( &esContext ) != 0 )
         return 0;
 

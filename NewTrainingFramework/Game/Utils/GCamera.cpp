@@ -43,13 +43,13 @@ void GCamera::Init(float fFoV, float fScale, float fNear, float fFar)
     mFar = fFar;
 
     mHoriAngle = PI;
-    mVertAngle = 0.0f;
+    mVertAngle = -PI/6;
 
     mPosition = glm::vec3( 0, 2, 3 );
     SetDirection(glm::vec2(0));
 
-    mMouseSpeed = 0.00005f;
-    mSpeed = 0.0005f;
+    mMouseSpeed = 0.0001f;
+    mSpeed = 0.001f;
 
     mModel = glm::mat4(1);
 	mView = glm::mat4(1);
@@ -62,7 +62,6 @@ void GCamera::SetDirection(glm::vec2 const &horiVertAngl)
 {
     mHoriAngle += mMouseSpeed * horiVertAngl.x;
     mVertAngle += mMouseSpeed * horiVertAngl.y;
-
     mDirection = glm::vec3(
         cos(mVertAngle) * sin(mHoriAngle),
         sin(mVertAngle),
@@ -76,6 +75,7 @@ void GCamera::SetDirection(glm::vec2 const &horiVertAngl)
     );
 
     mUp = glm::cross( mRight, mDirection );
+
 }
 
 eCameraKey_t GCamera::KeyPressed(eCameraKey_t key)

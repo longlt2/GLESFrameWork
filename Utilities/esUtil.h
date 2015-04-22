@@ -1,7 +1,6 @@
 #pragma once
 #include <GLES3/gl3.h>
 #include <EGL/egl.h>
-
 //  Macros
 
 #define ESUTIL_API  __cdecl

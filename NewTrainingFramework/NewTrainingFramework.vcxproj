@@ -53,7 +53,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>D:\Lib\msvc\include;$(SolutionDir)\Include;Game;Game\Physic;Game\Utils;$(ProjectDir);$(SolutionDir)\Utilities;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Lib\msvc\include;$(SolutionDir)\Include;Game;Game\Physic;Game\Utils;$(ProjectDir);$(SolutionDir)\Utilities;d:\Lib\msvc\include\freetype2\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -63,7 +63,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>DevIL.lib;ILU.lib;ILUT.lib;libEGL.lib;libGLESv2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DevIL.lib;ILU.lib;ILUT.lib;libEGL.lib;libGLESv2.lib;freetype.lib;glfw3.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
@@ -100,6 +100,7 @@
     <ClCompile Include="Game\Physic\SceneManager.cpp" />
     <ClCompile Include="Game\Utils\Cube.cpp" />
     <ClCompile Include="Game\Utils\GCamera.cpp" />
+    <ClCompile Include="Game\Utils\QFont.cpp" />
     <ClCompile Include="Game\Utils\TextureManager.cpp" />
     <ClCompile Include="Game\Utils\VideoDriver.cpp" />
     <ClCompile Include="NewTrainingFramework.cpp" />
@@ -121,6 +122,7 @@
     <ClInclude Include="Game\Utils\Cube.h" />
     <ClInclude Include="Game\Utils\Define.h" />
     <ClInclude Include="Game\Utils\GCamera.h" />
+    <ClInclude Include="Game\Utils\QFont.h" />
     <ClInclude Include="Game\Utils\texturemanager.h" />
     <ClInclude Include="Game\Utils\VideoDriver.h" />
     <ClInclude Include="Globals.h" />
